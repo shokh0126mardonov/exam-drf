@@ -9,7 +9,7 @@ class CustomUser(AbstractUser):
         Doctor = 'DOCTOR' , 'Doctor'
         Patient = 'PATIENT' , 'Patient'
 
-    role = models.CharField(max_length=10, choices=Role.choices, default=Role.Patient)
+    role = models.CharField(max_length=10, choices=Role.choices)
  
     @property
     def is_patient(self):
