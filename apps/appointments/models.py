@@ -8,9 +8,9 @@ class Appointment(models.Model):
         pending = 'pending','Pending'
         confirmed = 'confirmed','Confirmed'
         cancelled = 'cancelled','Cancelled'
-        
-    doctor = models.ForeignKey("Doctor",on_delete=models.CASCADE,related_name='appointment')
-    patient = models.ForeignKey("Patient", on_delete=models.CASCADE,related_name='appointment')
-    timeslot = models.OneToOneField("TImeSlot",  on_delete=models.CASCADE,related_name='appointment')
-    status = models.CharField( max_length=10)
+
+    doctor = models.ForeignKey(Doctor,on_delete=models.CASCADE,related_name='appointment')
+    patient = models.ForeignKey(Patient, on_delete=models.CASCADE,related_name='appointment')
+    timeslot = models.OneToOneField(TImeSlot,  on_delete=models.CASCADE,related_name='appointment')
+    status = models.CharField(choices=AppoinrmentStatus.choices, max_length=10)
     created_at = models.DateTimeField(auto_now_add=False)
