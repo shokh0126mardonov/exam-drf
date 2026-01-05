@@ -12,3 +12,9 @@ class PostPermissions(BasePermission):
 
     def has_permission(self, request, view):
         return request.method == 'POST'
+    
+class GetPermissions(BasePermission):
+    message = 'faqat get methodga ruxsat!'
+
+    def has_permission(self, request, view):
+        return request.method == 'GET'

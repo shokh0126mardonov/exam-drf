@@ -21,6 +21,7 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
         exclude = [
+            "id",
             "groups",
             "user_permissions",
             "is_staff",
