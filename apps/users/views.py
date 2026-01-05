@@ -1,4 +1,5 @@
 from rest_framework.views import APIView
+from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.request import Request
@@ -7,6 +8,7 @@ from rest_framework import status
 
 from .permissons import IsAdmin,PostPermissions,GetPermissions
 from .serializers import RegisterSerializer,UserSerializer
+from .models import CustomUser
 
 
 class Register(APIView):
@@ -28,4 +30,8 @@ class Userdata(APIView):
     def get(self,requets:Request)->Response:
         return Response(UserSerializer(requets.user).data)
     
-    
+class AdminManageApi(ModelViewSet):
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAdmin,IsAuthenticated]
+    queryset = CustomUser.objects.all()
+    serializer_class = UserSerializer

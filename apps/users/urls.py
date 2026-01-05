@@ -5,7 +5,7 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView,
 )
 
-from .views import Register,Userdata
+from .views import Register,Userdata,AdminManageApi
 
 urlpatterns = [
 
@@ -15,4 +15,7 @@ urlpatterns = [
     path('auth/register/', Register.as_view(), name='register_page'),
     path('auth/me/', Userdata.as_view(), name='register_page'),
 
+    #Admin api
+    path('users/',AdminManageApi.as_view({'get':'list'}),name='Admin-managment'),
+    path('users/<int:pk>/',AdminManageApi.as_view({'get':'retrieve','patch':'partial_update','delete':'destroy'}),name='Admin-managment-detail')
 ]
