@@ -9,7 +9,7 @@ from rest_framework.response import Response
 from rest_framework import status
 
 from .models import Doctor,TImeSlot
-from .serializers import DoctorSerializer,TimeSlotSerializer,DoctorUpdateSerializers
+from .serializers import DoctorSerializer,TimeSlotSerializer,DoctorUpdateSerializers,PatientSerializers
 from apps.users.models import CustomUser
 
 
@@ -37,6 +37,22 @@ class DoctorProfileViewsets(APIView):
     
     def patch(self,request:Request)->Response:
         serializer = DoctorUpdateSerializers(data = request.data,partial = True, instance=request.user.doctor,)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class PatientViewSets(APIView):
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [JWTAuthentication]
+
+    def get(self,request:Request)->Response:
+        if hasattr(request.user,'patient'):
+            return Response(PatientSerializers(request.user.patient).data)
+        return Response('patient profile mavjud emas')
+    
+    def patch(self,request:Request)->Response:
+        serializer = PatientSerializers(data = request.data,partial = True, instance=request.user.patient,)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data, status=status.HTTP_200_OK)

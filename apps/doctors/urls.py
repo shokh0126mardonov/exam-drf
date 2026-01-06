@@ -1,6 +1,6 @@
 from django.urls import path
 
-from .views import DoctorViewsets,DoctortimeslotViewsets,DoctorProfileViewsets
+from .views import DoctorViewsets,DoctortimeslotViewsets,DoctorProfileViewsets,PatientViewSets
 
 urlpatterns = [
     # Dcotor Api
@@ -9,5 +9,8 @@ urlpatterns = [
     path('doctor/<int:pk>/timeslots/',DoctortimeslotViewsets.as_view()),
 
     #Doctor Profile Api
-    path('doctor/profile/',DoctorProfileViewsets.as_view())
+    path('doctor/profile/',DoctorProfileViewsets.as_view()),
+
+    #Patient Api
+    path('patient/profile/',PatientViewSets.as_view())
 ]
