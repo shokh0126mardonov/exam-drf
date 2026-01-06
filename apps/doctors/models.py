@@ -12,6 +12,9 @@ class Doctor(models.Model):
     experience_years = models.IntegerField()
     gender = models.CharField(choices=Gender.choices)
 
+    def __str__(self):
+        return self.user.username
+
 
 class Patient(models.Model):
     class Gender(models.TextChoices):
@@ -29,7 +32,7 @@ class TImeSlot(models.Model):
         bosh = 'bo\'sh', 'Bo\'sh'
         band = 'band', 'Band'
 
-    doctor = models.ForeignKey("Doctor", verbose_name=("shifokor qabul vaqti"), on_delete=models.CASCADE)
+    doctor = models.ForeignKey("Doctor", on_delete=models.CASCADE,related_name='timeslot')
     date = models.DateField()
     start_time = models.TimeField()
     end_time = models.TimeField()
