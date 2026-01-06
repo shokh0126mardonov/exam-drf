@@ -28,3 +28,9 @@ class PatientSerializers(serializers.ModelSerializer):
     class Meta:
         model = Patient
         fields = '__all__'
+
+class TimeslotSerializers(serializers.ModelSerializer):
+    doctor = DoctorSerializer(read_only = True)
+    class Meta:
+        model = TImeSlot
+        fields = ['doctor','date','start_time','end_time','is_available']

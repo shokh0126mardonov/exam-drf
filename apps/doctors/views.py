@@ -9,19 +9,20 @@ from rest_framework.response import Response
 from rest_framework import status
 
 from .models import Doctor,TImeSlot
-from .serializers import DoctorSerializer,TimeSlotSerializer,DoctorUpdateSerializers,PatientSerializers
+from .serializers import DoctorSerializer,TimeSlotSerializer,DoctorUpdateSerializers,PatientSerializers,TimeslotSerializers
+from .permissions import IsDoctor,IsPatient
 from apps.users.models import CustomUser
 
 
 class DoctorViewsets(ModelViewSet):
     queryset = Doctor.objects.all()
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated,IsDoctor]
     authentication_classes = [JWTAuthentication]
     serializer_class = DoctorSerializer
 
 class DoctortimeslotViewsets(APIView):
 
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated,IsDoctor]
     authentication_classes = [JWTAuthentication]
 
     def get(self,request:Request,pk)->Response:
@@ -30,7 +31,7 @@ class DoctortimeslotViewsets(APIView):
         return Response(TimeSlotSerializer(data,many = True).data)
     
 class DoctorProfileViewsets(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated,IsDoctor]
     authentication_classes = [JWTAuthentication]
     def get(self,request:Request)->Response:
         return Response(DoctorSerializer(request.user.doctor).data)
@@ -43,7 +44,7 @@ class DoctorProfileViewsets(APIView):
 
 
 class PatientViewSets(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated,IsPatient]
     authentication_classes = [JWTAuthentication]
 
     def get(self,request:Request)->Response:
@@ -56,3 +57,14 @@ class PatientViewSets(APIView):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data, status=status.HTTP_200_OK)
+    
+class TimeSlotViewSets(ModelViewSet):
+    queryset = TImeSlot.objects.all()
+    serializer_class = TimeslotSerializers
+    permission_classes = [IsAuthenticated,IsDoctor]
+    authentication_classes = [JWTAuthentication]
+
+    def perform_create(self, serializer):
+        return serializer.save(doctor = self.request.user.doctor)
+    
+    
